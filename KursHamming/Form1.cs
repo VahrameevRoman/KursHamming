@@ -21,10 +21,10 @@ namespace KursHamming
         {
             string inputText;
             int textLength;
-            string emptyHamming;
+            string hammingCode;
             int hammingLength;
             int countControlBit;
-            int[] controlBits; //
+            int[] controlBits;
             int[,] hammingTable;
 
             if (!checkBinaryText(inputTextBox.Text))
@@ -43,7 +43,7 @@ namespace KursHamming
             textLength = inputText.Length;
 
             //выводим код хэмминга с пустыми контрольными битами
-            emptyHamming = "";
+            hammingCode = "";
             int powerOfTwo = 1; //контрольные биты находятся в целых логарифмах по основанию два
             int power = 0;
             for (int i = 0, j = 0;i < textLength;) // i-порядок введёной строки j-порядок кода хэмминга
@@ -53,33 +53,48 @@ namespace KursHamming
                 {
                     power++;
                     powerOfTwo = (int)Math.Pow(2,power);
-                    emptyHamming += '0';
+                    hammingCode += '0';
                 }
                 else
                 {
-                    emptyHamming += inputText[i];
+                    hammingCode += inputText[i];
                     i++;
                 }
                 j++;
             }
-            hammingLength = emptyHamming.Length;
-            countControlBit = emptyHamming.Length - textLength;
+            hammingLength = hammingCode.Length;
+            countControlBit = hammingCode.Length - textLength;
             controlBits = new int[countControlBit];
             hammingTable = new int[countControlBit, hammingLength];
 
-            //заполнение таблицы хэмминга и расчёт контрольных бит
-            //заранее заполнение таблицы нулями
+            //заполнение таблицы хэмминга
             for (int i = 0; i < hammingLength; i++)
             {
                 //каждая строка это число в двоичной системе, написанное сверху вниз, оставшиеся клетки заполнены нулями автоматически
                 string column = Convert.ToString(i+1, 2);
-                column = new string(column.Reverse().ToArray());
+                column = new string(column.Reverse().ToArray()); //переворот строки
                 for (int j = 0; j < column.Length; j++)
                 {
                     hammingTable[j,i] = column[j] - '0';
                 }
             }
-
+            //расчет контрольных бит
+            for (int i = 0; i < countControlBit; i++)
+            {
+                int temp = 0;
+                for (int j = 0; j < hammingLength; j++)
+                {
+                    temp +=  hammingTable[i,j] * hammingCode[j];
+                }
+                controlBits[i] = temp % 2;
+            }
+            //подстановка контрольных бит в код хэмминга
+            for (int i = 0; i < countControlBit; i++)
+            {
+                int tempLocation = (int)Math.Pow(2, i) - 1;
+                hammingCode = hammingCode.Remove(tempLocation, 1).Insert(tempLocation, controlBits[i].ToString());
+            }
+            firstHammingTextBox.Text = hammingCode;
         }
 
         bool checkBinaryText(string text) 
@@ -106,6 +121,14 @@ namespace KursHamming
                 return;
             }
             if (firstHammingTextBox.Text == "") return;
+
+            string hammingCode = firstHammingTextBox.Text;
+            int hammingLength = hammingCode.Length;
+            int countControlBit;
+            //считаем количество контрольных бит
+            countControlBit = (int)Math.Ceiling(Math.Log(hammingLength + 1, 2));
+            //пересчитываем контрольные биты
+
         }
     }
 }

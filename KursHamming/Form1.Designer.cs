@@ -67,7 +67,7 @@
             this.getCodeHammingButton.Name = "getCodeHammingButton";
             this.getCodeHammingButton.Size = new System.Drawing.Size(271, 45);
             this.getCodeHammingButton.TabIndex = 2;
-            this.getCodeHammingButton.Text = "Получить код Хэминга";
+            this.getCodeHammingButton.Text = "Получить код Хэмминга";
             this.getCodeHammingButton.UseVisualStyleBackColor = true;
             this.getCodeHammingButton.Click += new System.EventHandler(this.getCodeHammingButton_Click);
             // 
