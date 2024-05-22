@@ -27,17 +27,7 @@ namespace KursHamming
             int[] controlBits;
             int[,] hammingTable;
 
-            if (!checkBinaryText(inputTextBox.Text))
-            {
-                MessageBox.Show(
-                    "В полях ввода допускаются значения только 1 или 0.",
-                    "Ошибка",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information,
-                    MessageBoxDefaultButton.Button1,
-                    MessageBoxOptions.DefaultDesktopOnly);
-                return;
-            }
+            if (!checkBinaryText(inputTextBox.Text)) return;
             if (inputTextBox.Text == "") return;
             inputText = inputTextBox.Text; //-- исходный текст
             textLength = inputText.Length;
@@ -102,24 +92,24 @@ namespace KursHamming
             for (int i = 0; i < text.Length; i++)
             {
 
-                if ((text[i] != '1') && (text[i] != '0')) return false;
+                if ((text[i] != '1') && (text[i] != '0'))
+                {
+                    MessageBox.Show(
+                        "В полях ввода допускаются значения только 1 или 0.",
+                        "Ошибка",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information,
+                        MessageBoxDefaultButton.Button1,
+                        MessageBoxOptions.DefaultDesktopOnly);
+                    return false;
+                }
             }
             return true;
         }
 
         private void fixCodeButton_Click(object sender, EventArgs e)
         {
-            if (!checkBinaryText(firstHammingTextBox.Text))
-            {
-                MessageBox.Show(
-                    "В полях ввода допускаются значения только 1 или 0.",
-                    "Ошибка",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information,
-                    MessageBoxDefaultButton.Button1,
-                    MessageBoxOptions.DefaultDesktopOnly);
-                return;
-            }
+            if (!checkBinaryText(firstHammingTextBox.Text)) return;
             if (firstHammingTextBox.Text == "") return;
 
             string hammingCode = firstHammingTextBox.Text;
@@ -187,6 +177,7 @@ namespace KursHamming
             if (locationError == 0)  //ошибки нет
             {
                 ErrorStatusTextBox.Text = "Ошибка не обнаружена";
+                correctHammingTextBox.Text = "";
                 return;
             }
             locationError--;
