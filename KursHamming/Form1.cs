@@ -195,5 +195,10 @@ namespace KursHamming
             correctHammingTextBox.Text = hammingCode;
             return;
         }
+
+        private void propertiesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new Form2().Show();
+        }
     }
 }
