@@ -16,7 +16,8 @@ namespace KursHamming
         {
             InitializeComponent();
         }
-
+        
+        //функция кодирования входных данных
         private void getCodeHammingButton_Click(object sender, EventArgs e)
         {
             string inputText;
@@ -27,12 +28,13 @@ namespace KursHamming
             int[] controlBits;
             int[,] hammingTable;
 
+            //проверка правильности текста
             if (!checkBinaryText(inputTextBox.Text)) return;
             if (inputTextBox.Text == "") return;
             inputText = inputTextBox.Text; //-- исходный текст
             textLength = inputText.Length;
 
-            //выводим код хэмминга с пустыми контрольными битами
+            //создаём код хэмминга с пустыми контрольными битами
             hammingCode = "";
             int powerOfTwo = 1; //контрольные биты находятся в целых логарифмах по основанию два
             int power = 0;
@@ -84,9 +86,11 @@ namespace KursHamming
                 int tempLocation = (int)Math.Pow(2, i) - 1;
                 hammingCode = hammingCode.Remove(tempLocation, 1).Insert(tempLocation, controlBits[i].ToString());
             }
+            //вывод кода хэмминга
             firstHammingTextBox.Text = hammingCode;
         }
 
+        //функция проверки текста на двичный код
         bool checkBinaryText(string text) 
         {
             for (int i = 0; i < text.Length; i++)
@@ -107,8 +111,10 @@ namespace KursHamming
             return true;
         }
 
+        //функция поиска ошибки в коде Хэмминга
         private void fixCodeButton_Click(object sender, EventArgs e)
         {
+            //проверка входного текста на правильность
             if (!checkBinaryText(firstHammingTextBox.Text)) return;
             if (firstHammingTextBox.Text == "") return;
 
@@ -191,11 +197,14 @@ namespace KursHamming
             {
                 hammingCode = hammingCode.Remove(locationError, 1).Insert(locationError, "0");
             }
+
+            //вывод результатов
             ErrorStatusTextBox.Text = "Обнаружена ошибка в разряде #" + (locationError+1) + ". Ошибка устранена.";
             correctHammingTextBox.Text = hammingCode;
             return;
         }
 
+        //открытие формы со справочной информацией
         private void propertiesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             new Form2().Show();
